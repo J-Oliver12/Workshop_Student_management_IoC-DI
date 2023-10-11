@@ -8,14 +8,13 @@ import java.util.Scanner;
 
 @Configuration
 @ComponentScan(basePackages = "org.example")
-public class ComponentScanConfig {
+public class AppConfig {
 
-    @Bean
+/*    @Bean
     public Scanner scanner() {
         return new Scanner(System.in);
-    }
-
-
-
-
+    }*/
 }
+
+
+
