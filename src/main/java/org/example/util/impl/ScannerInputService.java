@@ -22,10 +22,19 @@ public class ScannerInputService implements UserInputService {
         return scanner.nextLine();
     }
 
+
+
     @Override
     public int getInt(String prompt) {
         System.out.print(prompt);
-        return scanner.nextInt();
+        while (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a valid integer.");
+            System.out.print(prompt);
+            scanner.next(); // Consume invalid input
+        }
+        int result = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+        return result;
     }
 
 

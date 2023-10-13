@@ -13,26 +13,24 @@ import java.util.Scanner;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args ) {
+public class App {
+    public static void main(String[] args) {
 
-                                  // Part 1
+        // Part 1
         /*AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(ComponentScanConfig.class);
         StudentDao studentDao = context.getBean(StudentDao.class);*/
 
 
-                                  // Part 2
+        // Part 2
         /*AnnotationConfigApplicationContext context =
                 //new AnnotationConfigApplicationContext(AppConfig.class);  // by using new AppConfig class
                 new AnnotationConfigApplicationContext(ComponentScanConfig.class); // by adding method to already existing configuration class
         UserInputService userInputService =context.getBean(UserInputService.class);*/
 
 
-                                   // Part 3
+        // Part 3
         /*AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(ComponentScanConfig.class);
 
@@ -50,8 +48,8 @@ public class App
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ComponentScanConfig.class);
         StudentManagement studentManagement = context.getBean(StudentManagement.class);
+        UserInputService userInputService = context.getBean(UserInputService.class);
 
-        Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
 
         while (isRunning) {
@@ -63,42 +61,46 @@ public class App
             System.out.println("5. Edit a student");
             System.out.println("6. Exit");
 
-            int choice = scanner.nextInt();
+            int choice = userInputService.getInt("Choose a valid option:");
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter the student's name: ");
-                    String studentName = scanner.next();
-                    System.out.println("Enter the student's age: ");
-                    int studentAge = scanner.nextInt();
+                    String studentName = userInputService.getString("Enter the student's name: ");
+                    int studentAge = userInputService.getInt("Enter the student's age: ");
 
-                    Student createdStudent = studentManagement.create(studentName, studentAge); // Store the created student
+                    Student createdStudent = studentManagement.create(studentName, studentAge);
                     System.out.println("New student created with ID: " + createdStudent.getId());
                     break;
                 case 2:
-                    System.out.println("Enter the student's ID: ");
-                    int studentId = scanner.nextInt(); // Provide the actual ID
-                    studentManagement.find(studentId);
+                    int studentId = userInputService.getInt("Enter the student's ID: ");
+                    Student foundStudent = studentManagement.find(studentId);
+                    if (foundStudent != null) {
+                        System.out.println("Student found with ID: " + foundStudent.getId());
+                    }
                     break;
                 case 3:
-                    System.out.println("Enter the student's ID to remove: ");
-                    int removeId = scanner.nextInt();
-                    studentManagement.remove(removeId);
+                    int removeId = userInputService.getInt("Enter the student's ID to remove: ");
+                    Student removedStudent = studentManagement.remove(removeId);
+                    if (removedStudent != null) {
+                        System.out.println("Student removed with ID: " + removedStudent.getId());
+                    }
                     break;
                 case 4:
-                    studentManagement.findAll();
+                    List<Student> students = studentManagement.findAll();
+                    if (!students.isEmpty()) {
+                        System.out.println("No students found.");
+                    }
                     break;
                 case 5:
-                    System.out.println("Enter the student's ID to edit: ");
-                    int editId = scanner.nextInt();
-                    System.out.println("Enter the new name: ");
-                    String newName = scanner.next();
-                    System.out.println("Enter the new age: ");
-                    int newAge = scanner.nextInt();
-                    studentManagement.edit(editId, newName, newAge);
+                    int editId = userInputService.getInt("Enter the student's ID to edit: ");
+                    String newName = userInputService.getString("Enter the new name: ");
+                    int newAge = userInputService.getInt("Enter the new age: ");
+                    Student editedStudent = studentManagement.edit(editId, newName, newAge);
+                    if (editedStudent != null) {
+                        System.out.println("Student edited with ID: " + editedStudent.getId());
+                    }
                     break;
                 case 6:
-                    // Exit the loop
                     isRunning = false;
                     break;
                 default:
@@ -107,7 +109,6 @@ public class App
         }
 
         System.out.println("Exiting the application.");
-        scanner.close();
     }
 }
 

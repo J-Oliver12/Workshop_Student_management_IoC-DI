@@ -13,12 +13,16 @@ public class StudentDaoListImpl implements StudentDao {
     private final List<Student> students = new ArrayList<>();
     private int nextId = 1;
 
+
     @Override
     public Student save(Student student) {
-        student.setId(nextId++);
-        students.add(student);
+        if (student.getId() == 0) {
+            student.setId(nextId++);
+            students.add(student);
+        }
         return student;
     }
+
 
     @Override
     public Student find(int id) {
@@ -27,7 +31,7 @@ public class StudentDaoListImpl implements StudentDao {
                 return student;
             }
         }
-        return null;
+        return null; // Student not found
     }
 
     @Override
@@ -58,7 +62,7 @@ public class StudentDaoListImpl implements StudentDao {
                 return student;
             }
         }
-        return null;
+        return null; // Student not found, no changes made
     }
 
 
