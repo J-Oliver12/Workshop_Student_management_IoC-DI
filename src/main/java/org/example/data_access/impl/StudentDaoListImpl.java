@@ -16,10 +16,7 @@ public class StudentDaoListImpl implements StudentDao {
 
     @Override
     public Student save(Student student) {
-        if (student.getId() == 0) {
-            student.setId(nextId++);
             students.add(student);
-        }
         return student;
     }
 
